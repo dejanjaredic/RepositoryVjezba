@@ -18,6 +18,6 @@ namespace RrepTest.Models
         [ForeignKey("KancelarijaId")]
         public Kancelarija Kancelarija { get; set; }
 
-        public List<KoriscenjeUredjaja> KoriscenjeUredjaja { get; set; }
+        public List<KoriscenjeUredjaja> KoriscenjeUredjaja { get; set; } = new List<KoriscenjeUredjaja>();
     }
 }

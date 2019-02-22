@@ -12,14 +12,14 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class OsobaController : BaseController<Osoba>
+    public class KoriscenjeUredjajaController : BaseController<KoriscenjeUredjaja>
     {
-        private readonly IOsobaRepository _repository;
+        private readonly IKoriscenjeUredjajaRepository _repository;
         private readonly IMapper _mapper;
-        public OsobaController(IOsobaRepository repository, IMapper mapper) : base(repository, mapper)
+        public KoriscenjeUredjajaController(IKoriscenjeUredjajaRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _mapper = mapper;
-            _repository = repository; 
+            _repository = repository;
         }
         [HttpGet("getalldata")]
         public IActionResult Get()
@@ -39,24 +39,15 @@ namespace RrepTest.Controllers
             return base.Delete(id);
         }
 
-        [HttpPost("kreiranjeosobe")]
-        public IActionResult CreatePerson(Osoba input)
+        // POST api/<controller>
+        [HttpPost("add/{name}/{surname}/{devices}")]
+        public IActionResult Post(string name, string surname, string devices)
         {
-            _repository.AddData(input);
+            _repository.AddData(name, surname, devices);
 
-            return Ok("Sacuvano");
+            return Ok("Created");
         }
 
-        [HttpPut("izmjena/{id}")]
-        public IActionResult EditData(int id, Osoba input)
-        {
-            var osoba = _repository.GetById(id);
-            osoba.Ime = input.Ime;
-            osoba.Prezime = input.Prezime;
-            _repository.Save();
-
-            return Ok(osoba);
-        }
 
     }
 }

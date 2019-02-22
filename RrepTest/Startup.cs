@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,15 +31,20 @@ namespace RrepTest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration["ConnString:RepoKanc"]));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IOsobaRepository, OsobaRepository>();
             services.AddScoped<IUredjajRepository, UredjajRepository>();
             services.AddScoped<IKancelarijaRepository, KancelarijaRepository>();
+            services.AddScoped<IKoriscenjeUredjajaRepository, KoriscenjeUredjajaRepository>();
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

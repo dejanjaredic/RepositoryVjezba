@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
@@ -11,56 +12,49 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class KancelarijaController : Controller
+    public class KancelarijaController : BaseController<Kancelarija>
     {
-        protected readonly IKancelarijaRepository _repository;
-
-        public KancelarijaController(IKancelarijaRepository repository)
+        private readonly IKancelarijaRepository _repository;
+        private readonly IMapper _mapper;
+        public KancelarijaController(IKancelarijaRepository repository, IMapper mapper) : base(repository, mapper)
         {
+            _mapper = mapper;
             _repository = repository;
         }
-        // GET: api/<controller>
-        [HttpGet]
+        [HttpGet("getalldata")]
         public IActionResult Get()
         {
-            return Ok(_repository.GetAll());
-            
+            return base.Get();
         }
 
-        // GET api/<controller>/5
         [HttpGet("getbyid/{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
-            return Ok(_repository.GetById(id));
+            return base.GetById(id);
         }
 
-        // POST api/<controller>
-        [HttpPost]
-        public IActionResult Post(Kancelarija input)
-        {
-           _repository.Create(input);
-            _repository.Save();
-
-            return Ok("sacuvano");
-        }
-
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, Kancelarija input)
-        {
-            var kancelarija = _repository.GetById(id);
-            kancelarija.Opis = input.Opis;
-            _repository.Save();
-            return Ok(kancelarija);
-        }
-
-        // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _repository.Delete(id);
-            _repository.Save();
-            return Ok("Izbrisano");
+            return base.Delete(id);
         }
+
+        [HttpPost]
+        public IActionResult Add(Kancelarija input)
+        {
+            return base.Post(input);
+        }
+
+        [HttpPut("edit/{id}")]
+        public IActionResult Edit(int id, Kancelarija input)
+        {
+            var kancelarija = _repository.GetById(id);
+            kancelarija.Opis = input.Opis;
+            _repository.Edit(id, kancelarija);
+            _repository.Save();
+            return Ok("Promijenjeno");
+
+        }
+
     }
 }

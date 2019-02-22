@@ -52,7 +52,7 @@ namespace RrepTest.Migrations
                         column: x => x.KancelarijaId,
                         principalTable: "Kancelarije",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,13 +74,13 @@ namespace RrepTest.Migrations
                         column: x => x.OsobaId,
                         principalTable: "Osobe",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_KorisceniUredjaji_Uredjaji_UredjajId",
                         column: x => x.UredjajId,
                         principalTable: "Uredjaji",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

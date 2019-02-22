@@ -6,8 +6,9 @@ using RrepTest.Models;
 
 namespace RrepTest.Interfaces.IRepository
 {
-    public interface IOsobaRepository
+    public interface IOsobaRepository : IRepository<Osoba>
     {
-        Osoba GetOsobaById(int id);
+        void AddData(Osoba input);
+        void Edit(int id, Osoba input);
     }
 }

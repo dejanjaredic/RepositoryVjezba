@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
@@ -11,53 +12,45 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class UredjajController : Controller
+    public class UredjajController : BaseController<Uredjaj>
     {
         
-        protected readonly IUredjajRepository _repository;
-        public UredjajController(IUredjajRepository repository)
+        private readonly IUredjajRepository _repository;
+        private readonly IMapper _mapper;
+        public UredjajController(IUredjajRepository repository, IMapper mapper) : base(repository, mapper)
         {
-           
+            _mapper = mapper;
             _repository = repository;
         }
-        [HttpPost("kreiraj")]
-        public ActionResult CreateData(Uredjaj input)
-        {
-            return Ok(_repository.AddData(input));
-        }
-
         [HttpGet("getalldata")]
-        public ActionResult<IEnumerable<Uredjaj>> GetAllData()
+        public IActionResult Get()
         {
-            return Ok(_repository.GetData());
+            return base.Get();
         }
 
         [HttpGet("getbyid/{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(_repository.GetById(id));
-        }
-
-        [HttpPut("editdata/{id}")]
-        public IActionResult Editdata(int id, Uredjaj input)
-        {
-            var getData = _repository.GetById(id);
-            getData.Name = input.Name;
-            _repository.Save();
-            return Ok("Izmijenjano");
+            return base.GetById(id);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteData(int id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-           _repository.Delete(id);
-            _repository.Save();
-
-            return Ok("deleted");
+            return base.Delete(id);
         }
+
+        [HttpPost]
+        public IActionResult Add(Uredjaj input)
+        {
+            return base.Post(input);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id, Uredjaj input)
+        {
+            return base.Put(id, input);
+        }
+       
     }
 }

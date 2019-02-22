@@ -7,13 +7,8 @@ using RrepTest.Models;
 
 namespace RrepTest.Interfaces.IRepository
 {
-    public interface IUredjajRepository
+    public interface IUredjajRepository : IRepository<Uredjaj>
     {
-        Uredjaj AddData(Uredjaj input);
-        List<Uredjaj> GetData();
-        Uredjaj GetById(int id);
-        void EditData(int id, Uredjaj input);
-        void Save();
-        void Delete(int id);
+
     }
 }

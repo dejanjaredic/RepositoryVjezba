@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace RrepTest.Interfaces.IRepository
 {
-    public interface IKancelarijaRepository
+    public interface IKancelarijaRepository : IRepository<Kancelarija>
     {
-        Kancelarija GetById(int id);
-        void Create(Kancelarija input);
-        void Save();
-        IEnumerable<Kancelarija> GetAll();
-        void Delete(int id);
-        void EditData(int id, Kancelarija input);
+
     }
 }

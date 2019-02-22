@@ -14,6 +14,6 @@ namespace RrepTest.Models
         public int Id { get; set; }
         public string Opis { get; set; }
 
-        public List<Osoba> Osoba { get; set; }
+        public List<Osoba> Osoba { get; set; } = new List<Osoba>();
     }
 }
