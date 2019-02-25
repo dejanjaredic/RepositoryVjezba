@@ -31,8 +31,8 @@ namespace RrepTest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
 
+            services.AddAutoMapper();
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration["ConnString:RepoKanc"]));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerGen(c =>
@@ -44,7 +44,7 @@ namespace RrepTest
             services.AddScoped<IUredjajRepository, UredjajRepository>();
             services.AddScoped<IKancelarijaRepository, KancelarijaRepository>();
             services.AddScoped<IKoriscenjeUredjajaRepository, KoriscenjeUredjajaRepository>();
-            services.AddAutoMapper();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

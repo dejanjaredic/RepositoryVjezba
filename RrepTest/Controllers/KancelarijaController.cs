@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
 
@@ -12,7 +13,7 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class KancelarijaController : BaseController<Kancelarija>
+    public class KancelarijaController : BaseController<Kancelarija, KancelarijaDto>
     {
         private readonly IKancelarijaRepository _repository;
         private readonly IMapper _mapper;
@@ -40,7 +41,7 @@ namespace RrepTest.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Kancelarija input)
+        public IActionResult Add(KancelarijaDto input)
         {
             return base.Post(input);
         }

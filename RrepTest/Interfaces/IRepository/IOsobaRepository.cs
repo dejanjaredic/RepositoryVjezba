@@ -10,5 +10,8 @@ namespace RrepTest.Interfaces.IRepository
     {
         void AddData(Osoba input);
         void Edit(int id, Osoba input);
+        int GetByNameSurname(string name, string surname);
+
+
     }
 }

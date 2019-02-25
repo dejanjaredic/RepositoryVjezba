@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
 
@@ -12,7 +13,7 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class UredjajController : BaseController<Uredjaj>
+    public class UredjajController : BaseController<Uredjaj, UredjajDto>
     {
         
         private readonly IUredjajRepository _repository;
@@ -41,15 +42,22 @@ namespace RrepTest.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Uredjaj input)
+        public IActionResult Add(UredjajDto input)
         {
             return base.Post(input);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Edit(int id, Uredjaj input)
+        public IActionResult Edit(int id, UredjajDto input)
         {
             return base.Put(id, input);
+        }
+
+        [HttpGet("getbyname")]
+        public IActionResult GetByName(string name)
+        {
+          return Ok(_repository.GetByName(name));
+           
         }
        
     }

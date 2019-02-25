@@ -12,7 +12,7 @@ using RrepTest.Interfaces.IRepository;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class BaseController<T> : Controller where T : class
+    public class BaseController<T, TDto> : Controller where T : class where TDto : class
     {
         
         private readonly IRepository<T> _repository;
@@ -27,28 +27,34 @@ namespace RrepTest.Controllers
         [HttpGet]
         protected virtual IActionResult Get()
         {
-            return Ok(_repository.GetAll());
+            var data = _repository.GetAll();
+
+            var mapData = _mapper.Map<IEnumerable<TDto>>(data);
+            return Ok(mapData);
         }
 
         // GET api/<controller>/5
         [HttpGet("getbyid/{id}")]
         protected virtual IActionResult GetById(int id)
         {
-            return Ok(_repository.GetById(id));
+            var data = _repository.GetById(id);
+            var mappingData = _mapper.Map<TDto>(data);
+            return Ok(mappingData);
         }
 
         // POST api/<controller>
         [HttpPost("add")]
-        protected virtual IActionResult Post(T input)
+        protected virtual IActionResult Post(TDto input)
         {
-            _repository.Add(input);
+            var maperData = _mapper.Map<T>(input);
+            _repository.Add(maperData);
             _repository.Save();
             return Ok("Sacuvano");
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        protected virtual IActionResult Put(int id, T input)
+        protected virtual IActionResult Put(int id, TDto input)
         {
             var data = _repository.GetById(id);
             _mapper.Map(input, data);

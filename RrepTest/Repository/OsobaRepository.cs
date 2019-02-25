@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RrepTest.Interfaces.IRepository;
 
 namespace RrepTest.Repository
@@ -80,6 +81,16 @@ namespace RrepTest.Repository
                     throw;
                 }
             }
+        }
+
+        public int GetByNameSurname(string name, string surname)
+        {
+            var osoba = _context.Osobe;
+            var osobaQuery =
+                osoba.Where(x => x.Ime.Equals(name) && x.Prezime.Equals(surname)).Select(i => i.Id);
+
+
+            return osobaQuery.FirstOrDefault();
         }
 
     }

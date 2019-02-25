@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
 
@@ -12,7 +13,7 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class OsobaController : BaseController<Osoba>
+    public class OsobaController : BaseController<Osoba, OsobaDto>
     {
         private readonly IOsobaRepository _repository;
         private readonly IMapper _mapper;
@@ -40,22 +41,30 @@ namespace RrepTest.Controllers
         }
 
         [HttpPost("kreiranjeosobe")]
-        public IActionResult CreatePerson(Osoba input)
+        public IActionResult CreatePerson(OsobaDto input)
         {
-            _repository.AddData(input);
+            var mapperData = _mapper.Map<Osoba>(input);
+            _repository.AddData(mapperData);
 
             return Ok("Sacuvano");
         }
 
         [HttpPut("izmjena/{id}")]
-        public IActionResult EditData(int id, Osoba input)
+        public IActionResult EditData(int id, OsobaUpdateDto input)
         {
             var osoba = _repository.GetById(id);
-            osoba.Ime = input.Ime;
-            osoba.Prezime = input.Prezime;
+           
+            _mapper.Map<OsobaUpdateDto, Osoba>(input, osoba);
             _repository.Save();
 
             return Ok(osoba);
+        }
+
+        [HttpGet("getbynamesurname")]
+        public IActionResult GetByNameSurname(string name, string surname)
+        {
+            return Ok(_repository.GetByNameSurname(name, surname));
+
         }
 
     }

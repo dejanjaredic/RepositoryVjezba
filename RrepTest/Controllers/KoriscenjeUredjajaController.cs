@@ -4,22 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
+using RrepTest.Repository;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class KoriscenjeUredjajaController : BaseController<KoriscenjeUredjaja>
+    public class KoriscenjeUredjajaController : BaseController<KoriscenjeUredjaja, KoriscenjeUredjajaDto>
     {
         private readonly IKoriscenjeUredjajaRepository _repository;
+        private readonly IOsobaRepository _osobaRepository;
+        private readonly IUredjajRepository _uredjajRepository;
         private readonly IMapper _mapper;
-        public KoriscenjeUredjajaController(IKoriscenjeUredjajaRepository repository, IMapper mapper) : base(repository, mapper)
+        public KoriscenjeUredjajaController(IKoriscenjeUredjajaRepository repository, IMapper mapper, IOsobaRepository osobaRepository, IUredjajRepository uredjajRepository) : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;
+            _osobaRepository = osobaRepository;
+            _uredjajRepository = uredjajRepository;
         }
         [HttpGet("getalldata")]
         public IActionResult Get()
@@ -39,13 +45,26 @@ namespace RrepTest.Controllers
             return base.Delete(id);
         }
 
-        // POST api/<controller>
-        [HttpPost("add/{name}/{surname}/{devices}")]
-        public IActionResult Post(string name, string surname, string devices)
-        {
-            _repository.AddData(name, surname, devices);
+        //POST api/<controller>
+        //[HttpPost("add/{name}/{surname}/{devices}")]
+        //public IActionResult Post(string name, string surname, string device)
+        //{
 
-            return Ok("Created");
+        //    _repository.AddData(name, surname, device);
+
+        //    return Ok("Created");
+        //}
+        [HttpPost("add/{name}/{surname}/{device}")]
+        public IActionResult Post(string name, string surname, string device)
+        {
+            
+            var osoba = _osobaRepository.GetByNameSurname(name, surname);
+            var uredjaj = _uredjajRepository.GetByName(device);
+
+            _repository.AddData(osoba, uredjaj);
+            _repository.Save();
+
+            return Ok("Sacuvano");
         }
 
 

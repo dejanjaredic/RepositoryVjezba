@@ -9,6 +9,6 @@ namespace RrepTest.Interfaces.IRepository
 {
     public interface IUredjajRepository : IRepository<Uredjaj>
     {
-
+        int GetByName(string device);
     }
 }

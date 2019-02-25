@@ -12,6 +12,7 @@ namespace RrepTest.Interfaces.IRepository
         //IEnumerable<KoriscenjeUredjaja> GetAllData();
         //KoriscenjeUredjaja GetById(int id);
         //void Delete(int id);
-        void AddData(string name, string surname, string device);
+        //void AddData();
+        void AddData(int osoba, int device);
     }
 }
