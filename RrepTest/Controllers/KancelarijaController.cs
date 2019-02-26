@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
+using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,7 +18,8 @@ namespace RrepTest.Controllers
     {
         private readonly IKancelarijaRepository _repository;
         private readonly IMapper _mapper;
-        public KancelarijaController(IKancelarijaRepository repository, IMapper mapper) : base(repository, mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public KancelarijaController(IKancelarijaRepository repository, IMapper mapper, IUnitOfWork unitOfWork) : base(repository, mapper, unitOfWork)
         {
             _mapper = mapper;
             _repository = repository;
@@ -52,7 +54,8 @@ namespace RrepTest.Controllers
             var kancelarija = _repository.GetById(id);
             kancelarija.Opis = input.Opis;
             _repository.Edit(id, kancelarija);
-            _repository.Save();
+            //_repository.Save();
+            _unitOfWork.Complete();
             return Ok("Promijenjeno");
 
         }

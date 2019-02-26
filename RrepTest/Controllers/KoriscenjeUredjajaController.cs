@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
+using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
 using RrepTest.Repository;
 
@@ -20,12 +21,22 @@ namespace RrepTest.Controllers
         private readonly IOsobaRepository _osobaRepository;
         private readonly IUredjajRepository _uredjajRepository;
         private readonly IMapper _mapper;
-        public KoriscenjeUredjajaController(IKoriscenjeUredjajaRepository repository, IMapper mapper, IOsobaRepository osobaRepository, IUredjajRepository uredjajRepository) : base(repository, mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public KoriscenjeUredjajaController
+        (
+            IKoriscenjeUredjajaRepository repository,
+            IMapper mapper,
+            IOsobaRepository osobaRepository,
+            IUredjajRepository uredjajRepository,
+            IUnitOfWork unitOfWork
+            ) 
+            : base(repository, mapper, unitOfWork)
         {
             _mapper = mapper;
             _repository = repository;
             _osobaRepository = osobaRepository;
             _uredjajRepository = uredjajRepository;
+            _unitOfWork = unitOfWork;
         }
         [HttpGet("getalldata")]
         public IActionResult Get()
@@ -62,7 +73,8 @@ namespace RrepTest.Controllers
             var uredjaj = _uredjajRepository.GetByName(device);
 
             _repository.AddData(osoba, uredjaj);
-            _repository.Save();
+            //_repository.Save();
+            _unitOfWork.Complete();
 
             return Ok("Sacuvano");
         }

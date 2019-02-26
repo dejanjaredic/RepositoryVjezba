@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RrepTest.Interfaces.IRepository;
+using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
 using RrepTest.Repository;
 using Swashbuckle.AspNetCore.Swagger;
@@ -44,7 +45,8 @@ namespace RrepTest
             services.AddScoped<IUredjajRepository, UredjajRepository>();
             services.AddScoped<IKancelarijaRepository, KancelarijaRepository>();
             services.AddScoped<IKoriscenjeUredjajaRepository, KoriscenjeUredjajaRepository>();
-            
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

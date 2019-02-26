@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RrepTest.Interfaces.IRepository;
+using RrepTest.Interfaces.IUnitOfWork;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,10 +18,12 @@ namespace RrepTest.Controllers
         
         private readonly IRepository<T> _repository;
         private readonly IMapper _mapper;
-        public BaseController(IRepository<T> repository, IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public BaseController(IRepository<T> repository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/<controller>
@@ -46,9 +49,10 @@ namespace RrepTest.Controllers
         [HttpPost("add")]
         protected virtual IActionResult Post(TDto input)
         {
+
             var maperData = _mapper.Map<T>(input);
             _repository.Add(maperData);
-            _repository.Save();
+            _unitOfWork.Complete();
             return Ok("Sacuvano");
         }
 
@@ -58,7 +62,7 @@ namespace RrepTest.Controllers
         {
             var data = _repository.GetById(id);
             _mapper.Map(input, data);
-            _repository.Save();
+            _unitOfWork.Complete();
             return Ok("Promijenjeno");
 
         }
@@ -68,7 +72,7 @@ namespace RrepTest.Controllers
         protected virtual IActionResult Delete(int id)
         {
             _repository.Delete(id);
-            _repository.Save();
+            _unitOfWork.Complete();
             return Ok("Obrisano");
         }
     }

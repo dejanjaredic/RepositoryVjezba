@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
+using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,10 +19,12 @@ namespace RrepTest.Controllers
         
         private readonly IUredjajRepository _repository;
         private readonly IMapper _mapper;
-        public UredjajController(IUredjajRepository repository, IMapper mapper) : base(repository, mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public UredjajController(IUredjajRepository repository, IMapper mapper, IUnitOfWork unitOfWork) : base(repository, mapper, unitOfWork)
         {
             _mapper = mapper;
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
         [HttpGet("getalldata")]
         public IActionResult Get()

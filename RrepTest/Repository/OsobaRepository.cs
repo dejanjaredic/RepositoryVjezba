@@ -19,49 +19,49 @@ namespace RrepTest.Repository
         }
 
 
-        public void AddData(Osoba input)
-        {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var osoba = new Osoba
-                    {
-                        Ime = input.Ime,
-                        Prezime = input.Prezime,
-                    };
-                    var sveKancelarije = _context.Kancelarije;
-                    var sveKancelarijeQuery = sveKancelarije.Select(x => x.Opis);
-                    if (sveKancelarijeQuery.Contains(input.Kancelarija.Opis))
-                    {
-                        var getKancelarijaId = _context.Kancelarije;
-                        var getKancelarijaQuery =
-                            getKancelarijaId.Where(x => x.Opis.Contains(input.Kancelarija.Opis)).Select(y => y.Id).FirstOrDefault();
-                        if (getKancelarijaQuery != null)
-                        {
-                            osoba.KancelarijaId = getKancelarijaQuery;
-                        }
-                    }
-                    else
-                    {
-                        osoba.Kancelarija = new Kancelarija
-                        {
-                            Opis = input.Kancelarija.Opis
-                        };
-                    }
+        //public void AddData(Osoba input)
+        //{
+        //    using (var transaction = _context.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            var osoba = new Osoba
+        //            {
+        //                Ime = input.Ime,
+        //                Prezime = input.Prezime,
+        //            };
+        //            var sveKancelarije = _context.Kancelarije;
+        //            var sveKancelarijeQuery = sveKancelarije.Select(x => x.Opis);
+        //            if (sveKancelarijeQuery.Contains(input.Kancelarija.Opis))
+        //            {
+        //                var getKancelarijaId = _context.Kancelarije;
+        //                var getKancelarijaQuery =
+        //                    getKancelarijaId.Where(x => x.Opis.Contains(input.Kancelarija.Opis)).Select(y => y.Id).FirstOrDefault();
+        //                if (getKancelarijaQuery != null)
+        //                {
+        //                    osoba.KancelarijaId = getKancelarijaQuery;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                osoba.Kancelarija = new Kancelarija
+        //                {
+        //                    Opis = input.Kancelarija.Opis
+        //                };
+        //            }
 
-                    _context.Osobe.Add(osoba);
-                    _context.SaveChanges();
+        //            _context.Osobe.Add(osoba);
+        //            _context.SaveChanges();
 
-                    transaction.Commit();
+        //            transaction.Commit();
 
-                }
-                catch (Exception e)
-                {
+        //        }
+        //        catch (Exception e)
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
         public void Edit(int id, Osoba input)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -91,6 +91,13 @@ namespace RrepTest.Repository
 
 
             return osobaQuery.FirstOrDefault();
+        }
+
+        public void AddPerson(Osoba input)
+        {
+            
+           _context.Osobe.Add(input);
+   
         }
 
     }

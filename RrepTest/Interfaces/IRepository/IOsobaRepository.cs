@@ -8,10 +8,10 @@ namespace RrepTest.Interfaces.IRepository
 {
     public interface IOsobaRepository : IRepository<Osoba>
     {
-        void AddData(Osoba input);
+        //void AddData(Osoba input);
         void Edit(int id, Osoba input);
         int GetByNameSurname(string name, string surname);
-
+        void AddPerson(Osoba input);
 
     }
 }

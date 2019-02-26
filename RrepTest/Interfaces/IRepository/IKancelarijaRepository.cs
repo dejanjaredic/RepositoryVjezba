@@ -1,13 +1,13 @@
 ﻿using RrepTest.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace RrepTest.Interfaces.IRepository
 {
     public interface IKancelarijaRepository : IRepository<Kancelarija>
     {
+        Kancelarija GeetFromDescription(string name);
+        void KreiranjeKancelarije(Kancelarija input);
 
+        bool ProvjeraPostojanjaKancelarije(int id);
     }
 }
