@@ -61,7 +61,7 @@ namespace RrepTest.Controllers
            
             _mapper.Map<OsobaUpdateDto, Osoba>(input, osoba);
             //_repository.Save();
-            _unitOfWork.Complete();
+            _unitOfWork.Save();
 
             return Ok(osoba);
         }
@@ -76,12 +76,32 @@ namespace RrepTest.Controllers
         [HttpPost("kreiranjeosobe")]
         public IActionResult CreatePerson(OsobaDto input, string desc)
         {
-            var kancelarija = _kancelarijaRepository.GeetFromDescription(desc) ?? new Kancelarija { Opis = desc };
-            var newPerson = _mapper.Map<Osoba>(input);
-            newPerson.Kancelarija = kancelarija;
-            _repository.AddPerson(newPerson);
-            //_repository.Save();
-            _unitOfWork.Complete();
+            _unitOfWork.Start();
+            try
+            {
+                var kancelarija = _kancelarijaRepository.GeetFromDescription(desc) ?? new Kancelarija { Opis = desc };
+                var newPerson = _mapper.Map<Osoba>(input);
+                newPerson.Kancelarija = kancelarija;
+                _repository.AddPerson(newPerson);
+                _unitOfWork.Save();
+                _unitOfWork.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            try
+            {
+                _unitOfWork.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
             return Ok("Sacuvano");
         }
 

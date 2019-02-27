@@ -49,10 +49,24 @@ namespace RrepTest.Controllers
         [HttpPost("add")]
         protected virtual IActionResult Post(TDto input)
         {
-
-            var maperData = _mapper.Map<T>(input);
-            _repository.Add(maperData);
-            _unitOfWork.Complete();
+            _unitOfWork.Start();
+            try
+            {
+                var maperData = _mapper.Map<T>(input);
+                _repository.Add(maperData);
+                _unitOfWork.Save();
+                _unitOfWork.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
+            
             return Ok("Sacuvano");
         }
 
@@ -60,9 +74,24 @@ namespace RrepTest.Controllers
         [HttpPut("{id}")]
         protected virtual IActionResult Put(int id, TDto input)
         {
-            var data = _repository.GetById(id);
-            _mapper.Map(input, data);
-            _unitOfWork.Complete();
+            _unitOfWork.Start();
+            try
+            {
+                var data = _repository.GetById(id);
+                _mapper.Map(input, data);
+                _unitOfWork.Save();
+                _unitOfWork.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
+            
             return Ok("Promijenjeno");
 
         }
@@ -72,7 +101,7 @@ namespace RrepTest.Controllers
         protected virtual IActionResult Delete(int id)
         {
             _repository.Delete(id);
-            _unitOfWork.Complete();
+            _unitOfWork.Save();
             return Ok("Obrisano");
         }
     }

@@ -11,7 +11,7 @@ namespace RrepTest.Interfaces.IRepository
         IEnumerable<T> GetAll();
         T GetById(int id);
         void Delete(int id);
-        void Save();
+        
         void Edit(int id, T input);
         
     }

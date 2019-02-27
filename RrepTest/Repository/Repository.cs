@@ -49,10 +49,7 @@ namespace RrepTest.Repository
             return data;
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+        
 
         
     }

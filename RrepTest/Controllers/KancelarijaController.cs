@@ -51,11 +51,25 @@ namespace RrepTest.Controllers
         [HttpPut("edit/{id}")]
         public IActionResult Edit(int id, Kancelarija input)
         {
-            var kancelarija = _repository.GetById(id);
-            kancelarija.Opis = input.Opis;
-            _repository.Edit(id, kancelarija);
-            //_repository.Save();
-            _unitOfWork.Complete();
+            _unitOfWork.Start();
+            try
+            {
+                var kancelarija = _repository.GetById(id);
+                kancelarija.Opis = input.Opis;
+                _repository.Edit(id, kancelarija);
+                _unitOfWork.Save();
+                _unitOfWork.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
+            
             return Ok("Promijenjeno");
 
         }

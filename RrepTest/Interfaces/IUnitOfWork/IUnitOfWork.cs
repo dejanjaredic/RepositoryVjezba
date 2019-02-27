@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RrepTest.Interfaces.Ather;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+
 
 namespace RrepTest.Interfaces.IUnitOfWork
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork 
     {
-        void RegisterUpdate(IDomain domain, IUnitOfWorkRepository repository);
-        void RegisterInsertion(IDomain domain, IUnitOfWorkRepository repository);
-        void RegisterDeletion(IDomain domain, IUnitOfWorkRepository repository);
+        void Save();
+        void Dispose();
         void Commit();
-        void Complete();
+        void Start();
     }
 }

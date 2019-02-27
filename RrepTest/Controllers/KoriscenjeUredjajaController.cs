@@ -68,14 +68,27 @@ namespace RrepTest.Controllers
         [HttpPost("add/{name}/{surname}/{device}")]
         public IActionResult Post(string name, string surname, string device)
         {
+            _unitOfWork.Start();
+            try
+            {
+                var osoba = _osobaRepository.GetByNameSurname(name, surname);
+                var uredjaj = _uredjajRepository.GetByName(device);
+
+                _repository.AddData(osoba, uredjaj);
+
+                _unitOfWork.Save();
+                _unitOfWork.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
             
-            var osoba = _osobaRepository.GetByNameSurname(name, surname);
-            var uredjaj = _uredjajRepository.GetByName(device);
-
-            _repository.AddData(osoba, uredjaj);
-            //_repository.Save();
-            _unitOfWork.Complete();
-
             return Ok("Sacuvano");
         }
 
