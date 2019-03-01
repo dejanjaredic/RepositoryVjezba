@@ -22,7 +22,11 @@ namespace RrepTest.Repository
 
         public void Add(T input)
         {
-            _context.Set<T>().Add(input);
+            if (input == null)
+            {
+                throw (new ExceptionFilterTest("Greska pri unosu"));
+            }
+                _context.Set<T>().Add(input);
         }
 
         public void Delete(int id)
@@ -31,7 +35,7 @@ namespace RrepTest.Repository
             var data = _context.Set<T>().Find(id);
             if (data == null)
             {
-                throw (new NotFintInDatabase("Nepostojeci Id"));
+                throw (new ExceptionFilterTest("Nepostojeci Id"));
             }
             _context.Set<T>().Remove(data);
         }
@@ -40,9 +44,9 @@ namespace RrepTest.Repository
         {
             // var data = _context.Set<T>().Find(id);
             var entry = _context.Set<T>().Attach(input);
-            if (entry == null)
+            if (id == null)
             {
-                throw (new NotFintInDatabase("Nepostojeci entitet"));
+                throw (new ExceptionFilterTest("Nepostojeci entitet"));
             }
             entry.State = EntityState.Modified;
            
@@ -50,7 +54,14 @@ namespace RrepTest.Repository
 
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+
+            var data = _context.Set<T>().ToList();
+            if (data == null)
+            {
+                throw (new ExceptionFilterTest("Nepostojeci Entitet"));
+
+            }
+            return data;
         }
 
         public T GetById(int id)
@@ -58,7 +69,8 @@ namespace RrepTest.Repository
             var data = _context.Set<T>().Find(id);
             if (data == null)
             {
-                throw (new NotFintInDatabase("Dati Entitet nije pronadjen"));
+                throw (new ExceptionFilterTest("Nepostojeci Entitet"));
+                
             }
             return data;
         }

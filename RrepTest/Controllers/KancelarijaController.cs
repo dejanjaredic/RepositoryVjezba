@@ -52,24 +52,9 @@ namespace RrepTest.Controllers
         [HttpPut("edit/{id}")]
         public IActionResult Edit(int id, Kancelarija input)
         {
-            //_unitOfWork.Start();
-            try
-            {
                 var kancelarija = _repository.GetById(id);
                 kancelarija.Opis = input.Opis;
                 _repository.Edit(id, kancelarija);
-                //_unitOfWork.Save();
-                //_unitOfWork.Commit();
-            }
-            catch (NotFintInDatabase e)
-            {
-                return NotFound(e.Message);
-            }
-            //finally
-            //{
-            //    _unitOfWork.Dispose();
-            //}
-            
             return Ok("Promijenjeno");
 
         }

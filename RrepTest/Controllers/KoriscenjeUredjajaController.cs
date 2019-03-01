@@ -57,39 +57,14 @@ namespace RrepTest.Controllers
             return base.Delete(id);
         }
 
-        //POST api/<controller>
-        //[HttpPost("add/{name}/{surname}/{devices}")]
-        //public IActionResult Post(string name, string surname, string device)
-        //{
-
-        //    _repository.AddData(name, surname, device);
-
-        //    return Ok("Created");
-        //}
         [HttpPost("add/{name}/{surname}/{device}")]
         public IActionResult Post(string name, string surname, string device)
         {
-            //_unitOfWork.Start();
-            try
-            {
-                var osoba = _osobaRepository.GetByNameSurname(name, surname);
-                var uredjaj = _uredjajRepository.GetByName(device);
 
-                _repository.AddData(osoba, uredjaj);
-
-                //_unitOfWork.Save();
-                //_unitOfWork.Commit();
-            }
-            catch (NotFintInDatabase e)
-            {
-               return BadRequest(e.Message);
-            }
-            //finally
-            //{
-            //    _unitOfWork.Dispose();
-            //}
-            
-            return Ok("Sacuvano");
+            var osoba = _osobaRepository.GetByNameSurname(name, surname);
+            var uredjaj = _uredjajRepository.GetByName(device);
+            _repository.AddData(osoba, uredjaj);
+            return Ok("Osoba: "+name+" "+ surname + " je zaduzila: "+device);
         }
 
 

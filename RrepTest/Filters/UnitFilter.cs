@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using RrepTest.Interfaces.IUnitOfWork;
+using RrepTest.Models;
 using RrepTest.MyExceptions;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace RrepTest.Filters
 {
-    public class UnitFilter : IActionFilter
+    public class UnitFilter : IAsyncActionFilter
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,24 +21,21 @@ namespace RrepTest.Filters
         {
             _unitOfWork = unitOfWork;
         }
-        public void OnActionExecuted(ActionExecutedContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
             _unitOfWork.Start();
             bool complited = false;
             try
             {
+                var result = await next();
                 _unitOfWork.Save();
                 complited = true;
             }
-            catch (Exception e)
+            catch (ExceptionFilterTest e)
             {
                 Console.WriteLine(e);
-                throw;
                 complited = false;
+                throw;
             }
             finally
             {
@@ -47,14 +48,7 @@ namespace RrepTest.Filters
                 {
                     _unitOfWork.Dispose();
                 }
-
             }
-
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            
         }  
     }
 }

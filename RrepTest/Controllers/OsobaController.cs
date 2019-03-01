@@ -46,34 +46,12 @@ namespace RrepTest.Controllers
             return base.Delete(id);
         }
 
-        //[HttpPost("kreiranjeosobe")]
-        //public IActionResult CreatePerson(OsobaDto input)
-        //{
-        //    var mapperData = _mapper.Map<Osoba>(input);
-        //    _repository.AddData(mapperData);
-
-        //    return Ok("Sacuvano");
-        //}
-
         [HttpPut("izmjena/{id}")]
         public IActionResult EditData(int id, OsobaUpdateDto input)
         {
-            try
-            {
                 var osoba = _repository.GetById(id);
                 _mapper.Map<OsobaUpdateDto, Osoba>(input, osoba);
                 return Ok(osoba);
-            }
-            catch (NotFintInDatabase e)
-            {
-                return NotFound(e.Message);
-            }
-           
-            
-            //_repository.Save();
-            //_unitOfWork.Save();
-
-            
         }
 
         [HttpGet("getbynamesurname")]
@@ -86,43 +64,14 @@ namespace RrepTest.Controllers
         [HttpPost("kreiranjeosobe")]
         public IActionResult CreatePerson(OsobaDto input, string desc)
         {
-            //_unitOfWork.Start();
-            try
-            {
+
                 var kancelarija = _kancelarijaRepository.GeetFromDescription(desc) ?? new Kancelarija { Opis = desc };
                 var newPerson = _mapper.Map<Osoba>(input);
                 newPerson.Kancelarija = kancelarija;
                 _repository.AddPerson(newPerson);
-                //_unitOfWork.Save();
-                //_unitOfWork.Commit();
-            }
-            catch (NotFintInDatabase e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-            try
-            {
-                _unitOfWork.Dispose();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
+ 
             return Ok("Sacuvano");
         }
-
-        //[HttpGet]
-        //public IActionResult TestKancelarija(KancelarijaDto input)
-        //{
-        //    var kancelarija = _kancelarijaRepository.GeetFromDescription(input);
-        //    var provjeraKancelarije = _kancelarijaRepository.ProvjeraPostojanjaKancelarije(kancelarija);
-
-        //    return Ok(provjeraKancelarije);
-        //}
 
     }
 }

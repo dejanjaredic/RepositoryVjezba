@@ -16,6 +16,7 @@ using RrepTest.Filters;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
+using RrepTest.MyExceptions;
 using RrepTest.Repository;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -36,9 +37,12 @@ namespace RrepTest
 
             services.AddAutoMapper();
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration["ConnString:RepoKanc"]));
-            services.AddMvc(option => 
-                option.Filters.Add(typeof(UnitFilter))
-                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(option =>
+            {
+                option.Filters.Add(typeof(UnitFilter));
+                option.Filters.Add(typeof(MyExceptionFilter));
+                option.Filters.Add(typeof(RresultFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });

@@ -26,8 +26,6 @@ namespace RrepTest.Repository
             return kancelarijeQuery;
         }
 
-        
-
         public bool ProvjeraPostojanjaKancelarije(int id)
         {
             bool postoji = false;
