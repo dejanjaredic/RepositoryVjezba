@@ -8,6 +8,7 @@ using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
+using RrepTest.MyExceptions;
 using RrepTest.Repository;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -68,7 +69,7 @@ namespace RrepTest.Controllers
         [HttpPost("add/{name}/{surname}/{device}")]
         public IActionResult Post(string name, string surname, string device)
         {
-            _unitOfWork.Start();
+            //_unitOfWork.Start();
             try
             {
                 var osoba = _osobaRepository.GetByNameSurname(name, surname);
@@ -76,18 +77,17 @@ namespace RrepTest.Controllers
 
                 _repository.AddData(osoba, uredjaj);
 
-                _unitOfWork.Save();
-                _unitOfWork.Commit();
+                //_unitOfWork.Save();
+                //_unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch (NotFintInDatabase e)
             {
-                Console.WriteLine(e);
-                throw;
+               return BadRequest(e.Message);
             }
-            finally
-            {
-                _unitOfWork.Dispose();
-            }
+            //finally
+            //{
+            //    _unitOfWork.Dispose();
+            //}
             
             return Ok("Sacuvano");
         }

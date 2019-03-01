@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
+using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
@@ -24,9 +25,12 @@ namespace RrepTest.Repository
         {
             var uredjaj = _context.Uredjaji;
             var uredjajQuery =
-                uredjaj.Where(x => x.Name.Equals(device)).Select(y => y.Id).FirstOrDefault();
-            
-            return uredjajQuery;
+                uredjaj.Where(x => x.Name.Equals(device)).Select(y => y.Id);
+            if (uredjajQuery.Count() == 0)
+            {
+                throw (new NotFintInDatabase($"Nepostojeci Uredjaj: {device} "));
+            }
+            return uredjajQuery.FirstOrDefault();
         }
     }
 }

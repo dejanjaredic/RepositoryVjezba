@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
+using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
@@ -26,7 +27,12 @@ namespace RrepTest.Repository
 
         public void Delete(int id)
         {
+            
             var data = _context.Set<T>().Find(id);
+            if (data == null)
+            {
+                throw (new NotFintInDatabase("Nepostojeci Id"));
+            }
             _context.Set<T>().Remove(data);
         }
 
@@ -34,6 +40,10 @@ namespace RrepTest.Repository
         {
             // var data = _context.Set<T>().Find(id);
             var entry = _context.Set<T>().Attach(input);
+            if (entry == null)
+            {
+                throw (new NotFintInDatabase("Nepostojeci entitet"));
+            }
             entry.State = EntityState.Modified;
            
         }
@@ -46,6 +56,10 @@ namespace RrepTest.Repository
         public T GetById(int id)
         {
             var data = _context.Set<T>().Find(id);
+            if (data == null)
+            {
+                throw (new NotFintInDatabase("Dati Entitet nije pronadjen"));
+            }
             return data;
         }
 

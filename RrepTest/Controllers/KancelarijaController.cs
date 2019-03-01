@@ -8,6 +8,7 @@ using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
+using RrepTest.MyExceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -51,24 +52,23 @@ namespace RrepTest.Controllers
         [HttpPut("edit/{id}")]
         public IActionResult Edit(int id, Kancelarija input)
         {
-            _unitOfWork.Start();
+            //_unitOfWork.Start();
             try
             {
                 var kancelarija = _repository.GetById(id);
                 kancelarija.Opis = input.Opis;
                 _repository.Edit(id, kancelarija);
-                _unitOfWork.Save();
-                _unitOfWork.Commit();
+                //_unitOfWork.Save();
+                //_unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch (NotFintInDatabase e)
             {
-                Console.WriteLine(e);
-                throw;
+                return NotFound(e.Message);
             }
-            finally
-            {
-                _unitOfWork.Dispose();
-            }
+            //finally
+            //{
+            //    _unitOfWork.Dispose();
+            //}
             
             return Ok("Promijenjeno");
 

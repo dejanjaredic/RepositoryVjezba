@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RrepTest.Interfaces.IRepository;
+using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
@@ -89,7 +90,10 @@ namespace RrepTest.Repository
             var osobaQuery =
                 osoba.Where(x => x.Ime.Equals(name) && x.Prezime.Equals(surname)).Select(i => i.Id);
 
-
+            if (osobaQuery.Count() == 0)
+            {
+                throw (new NotFintInDatabase($"Nepostojeca Osoba: {name + " " + surname} "));
+            }
             return osobaQuery.FirstOrDefault();
         }
 

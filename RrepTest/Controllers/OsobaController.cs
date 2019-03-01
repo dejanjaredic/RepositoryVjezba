@@ -8,6 +8,7 @@ using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
+using RrepTest.MyExceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -57,13 +58,22 @@ namespace RrepTest.Controllers
         [HttpPut("izmjena/{id}")]
         public IActionResult EditData(int id, OsobaUpdateDto input)
         {
-            var osoba = _repository.GetById(id);
+            try
+            {
+                var osoba = _repository.GetById(id);
+                _mapper.Map<OsobaUpdateDto, Osoba>(input, osoba);
+                return Ok(osoba);
+            }
+            catch (NotFintInDatabase e)
+            {
+                return NotFound(e.Message);
+            }
            
-            _mapper.Map<OsobaUpdateDto, Osoba>(input, osoba);
+            
             //_repository.Save();
-            _unitOfWork.Save();
+            //_unitOfWork.Save();
 
-            return Ok(osoba);
+            
         }
 
         [HttpGet("getbynamesurname")]
@@ -76,17 +86,17 @@ namespace RrepTest.Controllers
         [HttpPost("kreiranjeosobe")]
         public IActionResult CreatePerson(OsobaDto input, string desc)
         {
-            _unitOfWork.Start();
+            //_unitOfWork.Start();
             try
             {
                 var kancelarija = _kancelarijaRepository.GeetFromDescription(desc) ?? new Kancelarija { Opis = desc };
                 var newPerson = _mapper.Map<Osoba>(input);
                 newPerson.Kancelarija = kancelarija;
                 _repository.AddPerson(newPerson);
-                _unitOfWork.Save();
-                _unitOfWork.Commit();
+                //_unitOfWork.Save();
+                //_unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch (NotFintInDatabase e)
             {
                 Console.WriteLine(e);
                 throw;

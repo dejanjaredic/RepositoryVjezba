@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RrepTest.Filters;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
@@ -35,7 +36,9 @@ namespace RrepTest
 
             services.AddAutoMapper();
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration["ConnString:RepoKanc"]));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(option => 
+                option.Filters.Add(typeof(UnitFilter))
+                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
