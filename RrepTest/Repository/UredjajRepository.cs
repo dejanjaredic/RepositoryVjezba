@@ -26,7 +26,7 @@ namespace RrepTest.Repository
             var uredjaj = _context.Uredjaji;
             var uredjajQuery =
                 uredjaj.Where(x => x.Name.Equals(device)).Select(y => y.Id);
-            if (uredjajQuery.Count() == 0)
+            if (!uredjajQuery.Any())
             {
                 throw (new NotFintInDatabase($"Nepostojeci Uredjaj: {device} "));
             }

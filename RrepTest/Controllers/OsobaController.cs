@@ -61,17 +61,45 @@ namespace RrepTest.Controllers
 
         }
 
-        [HttpPost("kreiranjeosobe")]
-        public IActionResult CreatePerson(OsobaDto input, string desc)
+        [HttpPost("kreiranjeosobe/{opis}")]
+        public IActionResult CreatePerson(OsobaDto input, string opis)
         {
-
-                var kancelarija = _kancelarijaRepository.GeetFromDescription(desc) ?? new Kancelarija { Opis = desc };
+            
+            try
+            {
+                var kancelarija = _kancelarijaRepository.GeetFromDescription(opis) ?? new Kancelarija { Opis = opis };
                 var newPerson = _mapper.Map<Osoba>(input);
                 newPerson.Kancelarija = kancelarija;
                 _repository.AddPerson(newPerson);
- 
+
+            }
+            catch (ExceptionFilterTest e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            try
+            {
+                _unitOfWork.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
             return Ok("Sacuvano");
         }
+
+        //[HttpGet]
+        //public IActionResult TestKancelarija(KancelarijaDto input)
+        //{
+        //    var kancelarija = _kancelarijaRepository.GeetFromDescription(input);
+        //    var provjeraKancelarije = _kancelarijaRepository.ProvjeraPostojanjaKancelarije(kancelarija);
+
+        //    return Ok(provjeraKancelarije);
+        //}
 
     }
 }

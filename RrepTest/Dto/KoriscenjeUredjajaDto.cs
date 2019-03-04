@@ -14,10 +14,10 @@ namespace RrepTest.Dto
 
         public int UredjajId { get; set; }
         [ForeignKey("UredjajId")]
-        public Uredjaj Uredjaj { get; set; }
+        public UredjajDto Uredjaj { get; set; }
 
         public int OsobaId { get; set; }
         [ForeignKey("OsobaId")]
-        public Osoba Osoba { get; set; }
+        public OsobaDto Osoba { get; set; }
     }
 }

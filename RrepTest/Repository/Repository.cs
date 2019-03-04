@@ -74,9 +74,5 @@ namespace RrepTest.Repository
             }
             return data;
         }
-
-        
-
-        
     }
 }
