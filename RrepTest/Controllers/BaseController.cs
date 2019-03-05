@@ -15,13 +15,13 @@ using RrepTest.MyExceptions;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class BaseController<T, TDto> : Controller where T : class where TDto : class
+    public class BaseController<T, TDto, Ttype> : Controller where T : class where TDto : class
     {
         
-        private readonly IRepository<T> _repository;
+        private readonly IRepository<T, Ttype> _repository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public BaseController(IRepository<T> repository, IMapper mapper, IUnitOfWork unitOfWork)
+        public BaseController(IRepository<T, Ttype> repository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _repository = repository;
@@ -39,7 +39,7 @@ namespace RrepTest.Controllers
 
         // GET api/<controller>/5
         [HttpGet("getbyid/{id}")]
-        protected virtual IActionResult GetById(int id)
+        protected virtual IActionResult GetById(Ttype id)
         {
                 var data = _repository.GetById(id);
                 var mappingData = _mapper.Map<TDto>(data);
@@ -59,7 +59,7 @@ namespace RrepTest.Controllers
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        protected virtual IActionResult Put(int id, TDto input)
+        protected virtual IActionResult Put(Ttype id, TDto input)
         {
                 var data = _repository.GetById(id);
                 _mapper.Map(input, data);
@@ -68,7 +68,7 @@ namespace RrepTest.Controllers
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        protected virtual IActionResult Delete(int id)
+        protected virtual IActionResult Delete(Ttype id)
         {
             var data = _repository.GetById(id);
             _repository.Delete(id);

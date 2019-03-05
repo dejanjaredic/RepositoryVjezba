@@ -15,7 +15,7 @@ using RrepTest.MyExceptions;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class OsobaController : BaseController<Osoba, OsobaDto>
+    public class OsobaController : BaseController<Osoba, OsobaDto, int>
     {
         private readonly IOsobaRepository _repository;
         private readonly IKancelarijaRepository _kancelarijaRepository;
@@ -91,15 +91,5 @@ namespace RrepTest.Controllers
             
             return Ok("Sacuvano");
         }
-
-        //[HttpGet]
-        //public IActionResult TestKancelarija(KancelarijaDto input)
-        //{
-        //    var kancelarija = _kancelarijaRepository.GeetFromDescription(input);
-        //    var provjeraKancelarije = _kancelarijaRepository.ProvjeraPostojanjaKancelarije(kancelarija);
-
-        //    return Ok(provjeraKancelarije);
-        //}
-
     }
 }

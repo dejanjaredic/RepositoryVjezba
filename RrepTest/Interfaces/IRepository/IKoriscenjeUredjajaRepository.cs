@@ -7,7 +7,7 @@ using RrepTest.Models;
 
 namespace RrepTest.Interfaces.IRepository
 {
-    public interface IKoriscenjeUredjajaRepository : IRepository<KoriscenjeUredjaja>
+    public interface IKoriscenjeUredjajaRepository : IRepository<KoriscenjeUredjaja, int>
     {
         //IEnumerable<KoriscenjeUredjaja> GetAllData();
         //KoriscenjeUredjaja GetById(int id);

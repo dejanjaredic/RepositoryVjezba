@@ -11,7 +11,7 @@ using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
-    public class UredjajRepository : Repository<Uredjaj>, IUredjajRepository
+    public class UredjajRepository : Repository<Uredjaj, int>, IUredjajRepository
     {
         protected readonly DataContext _context;
 
@@ -28,7 +28,7 @@ namespace RrepTest.Repository
                 uredjaj.Where(x => x.Name.Equals(device)).Select(y => y.Id);
             if (!uredjajQuery.Any())
             {
-                throw (new NotFintInDatabase($"Nepostojeci Uredjaj: {device} "));
+                throw (new ExceptionFilterTest($"Nepostojeci Uredjaj: {device} "));
             }
             return uredjajQuery.FirstOrDefault();
         }

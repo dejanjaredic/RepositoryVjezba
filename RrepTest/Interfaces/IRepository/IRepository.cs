@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace RrepTest.Interfaces.IRepository
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T, Ttype> where T : class
     {
         void Add(T input);
         IEnumerable<T> GetAll();
-        T GetById(int id);
-        void Delete(int id);
+        T GetById(Ttype id);
+        void Delete(Ttype id);
         
-        void Edit(int id, T input);
+        void Edit(Ttype id, T input);
         
     }
 }

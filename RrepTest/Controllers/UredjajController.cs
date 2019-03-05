@@ -14,7 +14,7 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class UredjajController : BaseController<Uredjaj, UredjajDto>
+    public class UredjajController : BaseController<Uredjaj, UredjajDto, long>
     {
         
         private readonly IUredjajRepository _repository;
@@ -61,6 +61,13 @@ namespace RrepTest.Controllers
         {
           return Ok(_repository.GetByName(name));
            
+        }
+
+        [HttpGet("testtransacion")]
+        public IActionResult TestingTransaction(Uredjaj input)
+        {
+            _repository.Add(input);
+            return Ok();
         }
        
     }

@@ -9,7 +9,7 @@ using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T, Ttype> : IRepository<T, Ttype> where T : class
     {
         protected readonly DataContext _context;
 
@@ -29,7 +29,7 @@ namespace RrepTest.Repository
                 _context.Set<T>().Add(input);
         }
 
-        public void Delete(int id)
+        public void Delete(Ttype id)
         {
             
             var data = _context.Set<T>().Find(id);
@@ -40,7 +40,7 @@ namespace RrepTest.Repository
             _context.Set<T>().Remove(data);
         }
 
-        public void Edit(int id, T input)
+        public void Edit(Ttype id, T input)
         {
             // var data = _context.Set<T>().Find(id);
             var entry = _context.Set<T>().Attach(input);
@@ -64,7 +64,7 @@ namespace RrepTest.Repository
             return data;
         }
 
-        public T GetById(int id)
+        public T GetById(Ttype id)
         {
             var data = _context.Set<T>().Find(id);
             if (data == null)

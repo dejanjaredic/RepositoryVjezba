@@ -3,7 +3,7 @@
 
 namespace RrepTest.Interfaces.IRepository
 {
-    public interface IKancelarijaRepository : IRepository<Kancelarija>
+    public interface IKancelarijaRepository : IRepository<Kancelarija, int>
     {
         Kancelarija GeetFromDescription(string name);
         void KreiranjeKancelarije(Kancelarija input);

@@ -27,7 +27,7 @@ namespace RrepTest.Filters
             bool complited = false;
             try
             {
-                var result = await next();
+                await next();
                 _unitOfWork.Save();
                 complited = true;
             }

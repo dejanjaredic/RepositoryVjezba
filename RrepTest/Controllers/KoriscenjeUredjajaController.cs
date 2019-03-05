@@ -16,7 +16,7 @@ using RrepTest.Repository;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class KoriscenjeUredjajaController : BaseController<KoriscenjeUredjaja, KoriscenjeUredjajaDto>
+    public class KoriscenjeUredjajaController : BaseController<KoriscenjeUredjaja, KoriscenjeUredjajaDto, int>
     {
         private readonly IKoriscenjeUredjajaRepository _repository;
         private readonly IOsobaRepository _osobaRepository;

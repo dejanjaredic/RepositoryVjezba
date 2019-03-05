@@ -9,7 +9,7 @@ using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
-    public class OsobaRepository : Repository<Osoba>, IOsobaRepository
+    public class OsobaRepository : Repository<Osoba, int>, IOsobaRepository
     {
         protected readonly DataContext _context;
 
@@ -21,23 +21,10 @@ namespace RrepTest.Repository
 
         public void Edit(int id, Osoba input)
         {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
                     var osobe = _context.Osobe.Find(id);
                     osobe.Ime = input.Ime;
                     osobe.Prezime = input.Prezime;
-                    _context.SaveChanges();
-                    transaction.Commit();
-                   
-                }
-                catch (ExceptionFilterTest e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
+
         }
 
         public int GetByNameSurname(string name, string surname)

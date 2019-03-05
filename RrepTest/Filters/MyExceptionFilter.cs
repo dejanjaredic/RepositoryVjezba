@@ -24,7 +24,7 @@ namespace RrepTest.Filters
             //if (result.StatusCode != StatusCodes.Status200OK)
             //{
                 context.ExceptionHandled = true;
-                var resp = new ExceptionModel();
+                var resp = new ExceptionResponse();
                 var error = new Error()
                 {
                     Message = context.Exception.Message,

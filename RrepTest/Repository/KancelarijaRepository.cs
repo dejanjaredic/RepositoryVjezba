@@ -8,7 +8,7 @@ using RrepTest.Models;
 
 namespace RrepTest.Repository
 {
-    public class KancelarijaRepository : Repository<Kancelarija>, IKancelarijaRepository
+    public class KancelarijaRepository : Repository<Kancelarija, int>, IKancelarijaRepository
     {
         protected readonly DataContext _context;
 

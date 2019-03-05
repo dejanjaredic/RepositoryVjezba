@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RrepTest.Models
 {
-    public class ExceptionModel
+    public class ExceptionResponse
     {
         //public int Id { get; set; }
         public object Data { get; set; }

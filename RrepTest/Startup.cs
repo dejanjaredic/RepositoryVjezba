@@ -47,7 +47,7 @@ namespace RrepTest
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.AddScoped<IOsobaRepository, OsobaRepository>();
             services.AddScoped<IUredjajRepository, UredjajRepository>();
             services.AddScoped<IKancelarijaRepository, KancelarijaRepository>();

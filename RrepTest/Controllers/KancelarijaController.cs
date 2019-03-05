@@ -15,7 +15,7 @@ using RrepTest.MyExceptions;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class KancelarijaController : BaseController<Kancelarija, KancelarijaDto>
+    public class KancelarijaController : BaseController<Kancelarija, KancelarijaDto, int>
     {
         private readonly IKancelarijaRepository _repository;
         private readonly IMapper _mapper;
