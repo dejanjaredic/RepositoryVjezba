@@ -7,7 +7,7 @@ using RrepTest.Models;
 
 namespace RrepTest.Interfaces.IRepository
 {
-    public interface IUredjajRepository : IRepository<Uredjaj, long>
+    public interface IUredjajRepository : IRepository<Uredjaj, int>
     {
         int GetByName(string device);
     }

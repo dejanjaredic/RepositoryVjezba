@@ -24,12 +24,8 @@ namespace RrepTest.UnitOfWork
             _context = context;
         }
 
-        public void Start()
-        {
-            _transaction = _context.Database.BeginTransaction();
-
-        }
-
+        public void Start() 
+            => _transaction = _context.Database.BeginTransaction();
         public void Commit() 
             => this._transaction.Commit();
         public void Save() 
