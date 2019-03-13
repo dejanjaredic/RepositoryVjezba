@@ -25,7 +25,7 @@ namespace RrepTest.Filters
 
                 context.Result = new ObjectResult(resp);
             }
-            else if (result.StatusCode >=300 && result.StatusCode <= 400)
+            else if (result.StatusCode >=400 && result.StatusCode <= 500)
             {
                 //result.StatusCode = (int) HttpStatusCode.InternalServerError;
                 var resp = new ExceptionResponse();
@@ -33,7 +33,7 @@ namespace RrepTest.Filters
                 resp.IsError = true;
                 resp.Error = null;
 
-                context.Result = new ObjectResult(resp) {StatusCode = result.StatusCode};
+                context.Result = new ObjectResult(resp) {StatusCode = StatusCodes.Status500InternalServerError};
             }
         }
         public void OnResultExecuted(ResultExecutedContext context)

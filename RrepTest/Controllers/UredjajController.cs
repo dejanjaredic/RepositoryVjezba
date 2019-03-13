@@ -14,7 +14,7 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class UredjajController : BaseController<Uredjaj, UredjajDto, long>
+    public class UredjajController : BaseController<Uredjaj, UredjajDto, int>
     {
         
         private readonly IUredjajRepository _repository;

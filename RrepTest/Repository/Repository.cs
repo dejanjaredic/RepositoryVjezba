@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using RadnoMjestoVjezba.Middleware;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
 using RrepTest.MyExceptions;
@@ -35,7 +36,7 @@ namespace RrepTest.Repository
             var data = _context.Set<T>().Find(id);
             if (data == null)
             {
-                throw (new ExceptionFilterTest("Nepostojeci Id"));
+                throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
             }
             _context.Set<T>().Remove(data);
         }
@@ -46,7 +47,7 @@ namespace RrepTest.Repository
             var entry = _context.Set<T>().Attach(input);
             if (id == null)
             {
-                throw (new ExceptionFilterTest("Nepostojeci entitet"));
+                throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
             }
             entry.State = EntityState.Modified;
            
@@ -69,8 +70,8 @@ namespace RrepTest.Repository
             var data = _context.Set<T>().Find(id);
             if (data == null)
             {
-                throw (new ExceptionFilterTest("Nepostojeci Entitet"));
-                
+                throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
+
             }
             return data;
         }

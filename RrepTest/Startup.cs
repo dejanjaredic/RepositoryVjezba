@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RadnoMjestoVjezba.Middleware;
 using RrepTest.Filters;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Interfaces.IUnitOfWork;
@@ -76,7 +77,7 @@ namespace RrepTest
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
+            app.UseMiddleware<CustomExceptionMiddleware>();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
