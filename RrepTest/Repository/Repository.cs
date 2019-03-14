@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RadnoMjestoVjezba.Middleware;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
+using RrepTest.MyAttributes;
 using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
-    public class Repository<T, Ttype> : IRepository<T, Ttype> where T : class
+    [UniversalDI]
+    public abstract class Repository<T, Ttype> : IRepository<T, Ttype> where T : class
     {
-        protected readonly DataContext _context;
+        protected DataContext Context { get; }
 
 
         public Repository(DataContext context)
         {
-            _context = context;
+            Context = context;
         }
         
 
@@ -27,24 +27,24 @@ namespace RrepTest.Repository
             {
                 throw (new ExceptionFilterTest("Greska pri unosu"));
             }
-                _context.Set<T>().Add(input);
+                Context.Set<T>().Add(input);
         }
 
         public void Delete(Ttype id)
         {
             
-            var data = _context.Set<T>().Find(id);
+            var data = Context.Set<T>().Find(id);
             if (data == null)
             {
                 throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
             }
-            _context.Set<T>().Remove(data);
+            Context.Set<T>().Remove(data);
         }
 
         public void Edit(Ttype id, T input)
         {
             // var data = _context.Set<T>().Find(id);
-            var entry = _context.Set<T>().Attach(input);
+            var entry = Context.Set<T>().Attach(input);
             if (id == null)
             {
                 throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
@@ -56,7 +56,7 @@ namespace RrepTest.Repository
         public IEnumerable<T> GetAll()
         {
 
-            var data = _context.Set<T>().ToList();
+            var data = Context.Set<T>().ToList();
             if (data == null)
             {
                 throw (new ExceptionFilterTest("Nepostojeci Entitet"));
@@ -67,7 +67,7 @@ namespace RrepTest.Repository
 
         public T GetById(Ttype id)
         {
-            var data = _context.Set<T>().Find(id);
+            var data = Context.Set<T>().Find(id);
             if (data == null)
             {
                 throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));

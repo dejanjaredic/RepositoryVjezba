@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
+using RrepTest.MyAttributes;
 using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
+    [UniversalDI]
     public class KoriscenjeUredjajaRepository : Repository<KoriscenjeUredjaja, int>, IKoriscenjeUredjajaRepository
     {
         protected readonly DataContext _context;

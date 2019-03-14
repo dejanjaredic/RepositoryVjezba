@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using RrepTest.Dto;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
+using RrepTest.MyAttributes;
 
 namespace RrepTest.Repository
 {
+    [UniversalDI]
     public class KancelarijaRepository : Repository<Kancelarija, int>, IKancelarijaRepository
     {
         protected readonly DataContext _context;

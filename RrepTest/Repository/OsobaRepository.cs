@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RrepTest.Interfaces.IRepository;
+using RrepTest.MyAttributes;
 using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
+    [UniversalDI]
     public class OsobaRepository : Repository<Osoba, int>, IOsobaRepository
     {
         protected readonly DataContext _context;

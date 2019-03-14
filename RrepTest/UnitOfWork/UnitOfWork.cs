@@ -7,10 +7,12 @@ using System.Transactions;
 using Microsoft.EntityFrameworkCore.Storage;
 using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
+using RrepTest.MyAttributes;
 using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace RrepTest.UnitOfWork
 {
+    [UniversalDI]
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly DataContext _context;

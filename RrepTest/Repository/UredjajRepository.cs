@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
 using RrepTest.Interfaces.IRepository;
 using RrepTest.Models;
+using RrepTest.MyAttributes;
 using RrepTest.MyExceptions;
 
 namespace RrepTest.Repository
 {
-    public class UredjajRepository : Repository<Uredjaj, int>, IUredjajRepository
+    [UniversalDI]
+    public class UredjajRepository : Repository<Uredjaj, int>, IUredjajRepository, IMoj
     {
         protected readonly DataContext _context;
 
