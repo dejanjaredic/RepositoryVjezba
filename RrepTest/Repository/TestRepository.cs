@@ -8,7 +8,7 @@ using RrepTest.MyAttributes;
 namespace RrepTest.Interfaces.IRepository
 {
     [UniversalDI]
-    public abstract class TestRepository : IRepository<Uredjaj, int>
+    public class TestRepository : IRepository<Uredjaj, int>
     {
         public void Add(Uredjaj input)
         {

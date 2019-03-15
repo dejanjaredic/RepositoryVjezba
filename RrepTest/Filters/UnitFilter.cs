@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,31 +24,45 @@ namespace RrepTest.Filters
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            _unitOfWork.Start();
+            bool begin = false;
+            var request = context.HttpContext.Request.Method.Equals("GET");
+            var exceprionInRrequest = context.HttpContext.Request.QueryString;
+            if (!request)
+            {
+                _unitOfWork.Start();
+                begin = true;
+            }
+            
             bool complited = false;
             try
             {
                 await next();
-                _unitOfWork.Save();
-                complited = true;
+                if (begin)
+                {
+                    _unitOfWork.Save();
+                    complited = true; 
+                }
+                
             }
             catch (ExceptionFilterTest e)
             {
-                Console.WriteLine(e);
                 complited = false;
-                throw;
             }
             finally
             {
-                if (complited)
+                if (!request)
                 {
-                    _unitOfWork.Commit();
-                    _unitOfWork.Dispose();
+                    if (complited)
+                    {
+                        _unitOfWork.Commit();
+                        _unitOfWork.Dispose();
+                    }
+                    else
+                    {
+                        _unitOfWork.Dispose();
+                    }
                 }
-                else
-                {
-                    _unitOfWork.Dispose();
-                }
+                
             }
         }  
     }

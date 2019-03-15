@@ -10,7 +10,7 @@ using RrepTest.MyExceptions;
 namespace RrepTest.Repository
 {
     [UniversalDI]
-    public abstract class Repository<T, Ttype> : IRepository<T, Ttype> where T : class
+    public class Repository<T, Ttype> : IRepository<T, Ttype> where T : class
     {
         protected DataContext Context { get; }
 
