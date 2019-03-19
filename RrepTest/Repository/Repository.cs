@@ -36,7 +36,7 @@ namespace RrepTest.Repository
             var data = Context.Set<T>().Find(id);
             if (data == null)
             {
-                throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
+                throw (new ExceptionFilterTest("Nepostojeci entitet"));
             }
             Context.Set<T>().Remove(data);
         }
@@ -47,7 +47,7 @@ namespace RrepTest.Repository
             var entry = Context.Set<T>().Attach(input);
             if (id == null)
             {
-                throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
+                throw (new ExceptionFilterTest("Nepostojeci entitet"));
             }
             entry.State = EntityState.Modified;
            
@@ -70,7 +70,7 @@ namespace RrepTest.Repository
             var data = Context.Set<T>().Find(id);
             if (data == null)
             {
-                throw (new NotFoundCustomException("Nepostojeci entitet", $"{id}"));
+                throw (new ExceptionFilterTest("Nepostojeci entitet"));
 
             }
             return data;

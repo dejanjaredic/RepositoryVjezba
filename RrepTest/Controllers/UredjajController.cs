@@ -19,12 +19,10 @@ namespace RrepTest.Controllers
         
         private readonly IUredjajRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public UredjajController(IUredjajRepository repository, IMapper mapper, IUnitOfWork unitOfWork) : base(repository, mapper, unitOfWork)
+        public UredjajController(IUredjajRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;
-            _unitOfWork = unitOfWork;
         }
         [HttpGet("getalldata")]
         public IActionResult Get()

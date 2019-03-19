@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using RrepTest.Models;
+using RrepTest.MyAttributes;
 using RrepTest.MyExceptions;
 
 namespace RrepTest.Filters
 {
+    [UniversalFilterAttribut]
     public class RresultFilter : IResultFilter
     {
         public void OnResultExecuting(ResultExecutingContext context)

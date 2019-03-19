@@ -32,24 +32,12 @@ namespace RrepTest
 
             services.AddAutoMapper();
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration["ConnString:RepoKanc"]));
-            services.AddMvc(option =>
-            {
-                option.Filters.Add(typeof(UnitFilter));
-                option.Filters.Add(typeof(MyExceptionFilter));
-                option.Filters.Add(typeof(RresultFilter));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddFiltersService();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
-            //services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            //services.AddScoped<IOsobaRepository, OsobaRepository>();
-            //services.AddScoped<IUredjajRepository, UredjajRepository>();
-            //services.AddScoped<IKancelarijaRepository, KancelarijaRepository>();
-            //services.AddScoped<IKoriscenjeUredjajaRepository, KoriscenjeUredjajaRepository>();
-            //services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
-
-            services.AddSServices();
+            services.AddDI();
 
         }
 
@@ -73,7 +61,7 @@ namespace RrepTest
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-            app.UseMiddleware<CustomExceptionMiddleware>();
+            //app.UseMiddleware<CustomExceptionMiddleware>();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

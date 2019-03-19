@@ -5,16 +5,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using RrepTest.Interfaces.IUnitOfWork;
 using RrepTest.Models;
+using RrepTest.MyAttributes;
 using RrepTest.MyExceptions;
 
 namespace RrepTest.Filters
 {
+    [UniversalFilterAttribut]
     public class MyExceptionFilter : IExceptionFilter
     {
         
@@ -47,6 +50,7 @@ namespace RrepTest.Filters
             //}
                 
         }
-        
+
+
     }
 }

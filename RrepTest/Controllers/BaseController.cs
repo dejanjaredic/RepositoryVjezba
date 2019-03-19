@@ -20,12 +20,10 @@ namespace RrepTest.Controllers
         
         private readonly IRepository<T, Ttype> _repository;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public BaseController(IRepository<T, Ttype> repository, IMapper mapper, IUnitOfWork unitOfWork)
+        public BaseController(IRepository<T, Ttype> repository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;
-            _unitOfWork = unitOfWork;
         }
 
         // GET: api/<controller>

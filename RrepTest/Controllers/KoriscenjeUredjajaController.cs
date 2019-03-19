@@ -22,22 +22,19 @@ namespace RrepTest.Controllers
         private readonly IOsobaRepository _osobaRepository;
         private readonly IUredjajRepository _uredjajRepository;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
         public KoriscenjeUredjajaController
         (
             IKoriscenjeUredjajaRepository repository,
             IMapper mapper,
             IOsobaRepository osobaRepository,
-            IUredjajRepository uredjajRepository,
-            IUnitOfWork unitOfWork
+            IUredjajRepository uredjajRepository
             ) 
-            : base(repository, mapper, unitOfWork)
+            : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;
             _osobaRepository = osobaRepository;
             _uredjajRepository = uredjajRepository;
-            _unitOfWork = unitOfWork;
         }
         [HttpGet("getalldata")]
         public IActionResult Get()

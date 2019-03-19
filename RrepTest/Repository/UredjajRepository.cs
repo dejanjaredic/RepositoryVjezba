@@ -7,7 +7,7 @@ using RrepTest.MyExceptions;
 namespace RrepTest.Repository
 {
     [UniversalDI]
-    public class UredjajRepository : Repository<Uredjaj, int>, IUredjajRepository, IMoj
+    public class UredjajRepository : Repository<Uredjaj, int>, IUredjajRepository
     {
         protected readonly DataContext _context;
 

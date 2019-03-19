@@ -19,8 +19,7 @@ namespace RrepTest.Controllers
     {
         private readonly IKancelarijaRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public KancelarijaController(IKancelarijaRepository repository, IMapper mapper, IUnitOfWork unitOfWork) : base(repository, mapper, unitOfWork)
+        public KancelarijaController(IKancelarijaRepository repository, IMapper mapper, IUnitOfWork unitOfWork) : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;

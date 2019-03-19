@@ -22,7 +22,6 @@ namespace RrepTest.UnitOfWork
 
         public UnitOfWork(DataContext context)
         {
-            
             _context = context;
         }
 

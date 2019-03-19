@@ -20,13 +20,13 @@ namespace RrepTest.Controllers
         private readonly IOsobaRepository _repository;
         private readonly IKancelarijaRepository _kancelarijaRepository;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public OsobaController(IOsobaRepository repository, IMapper mapper, IKancelarijaRepository kancelarijaRepository, IUnitOfWork unitOfWork) : base(repository, mapper, unitOfWork)
+
+        public OsobaController(IOsobaRepository repository, IMapper mapper, IKancelarijaRepository kancelarijaRepository, IUnitOfWork unitOfWork) : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;
             _kancelarijaRepository = kancelarijaRepository;
-            _unitOfWork = unitOfWork;
+
         }
         [HttpGet("getalldata")]
         public IActionResult Get()
@@ -64,31 +64,12 @@ namespace RrepTest.Controllers
         [HttpPost("kreiranjeosobe/{opis}")]
         public IActionResult CreatePerson(OsobaDto input, string opis)
         {
-            
-            try
-            {
+ 
                 var kancelarija = _kancelarijaRepository.GeetFromDescription(opis) ?? new Kancelarija { Opis = opis };
                 var newPerson = _mapper.Map<Osoba>(input);
                 newPerson.Kancelarija = kancelarija;
                 _repository.AddPerson(newPerson);
 
-            }
-            catch (ExceptionFilterTest e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-            try
-            {
-                _unitOfWork.Dispose();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
             return Ok("Sacuvano");
         }
     }

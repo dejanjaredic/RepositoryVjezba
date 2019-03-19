@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace RrepTest.MyAttributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class AddTransientAttribute : Attribute
+    public class UniversalFilterAttribut : Attribute
     {
     }
 }

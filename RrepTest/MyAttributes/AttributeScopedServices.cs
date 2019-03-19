@@ -11,7 +11,7 @@ namespace RrepTest.MyAttributes
     public static class AttributeScopedServices
     {
         
-        public static void  AddSServices(this IServiceCollection services)
+        public static void  AddDI(this IServiceCollection services)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes().Where(x => x.GetCustomAttributes<UniversalDIAttribute>().Any());
