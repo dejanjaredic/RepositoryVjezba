@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RrepTest.Models;
 using RrepTest.MyAttributes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,6 +17,12 @@ namespace RrepTest.Controllers
     
     public class TestController : Controller
     {
+        private readonly DataContext _context;
+
+        public TestController(DataContext context)
+        {
+            _context = context;
+        }
         // GET: api/<controller>
         [HttpGet]
         public IActionResult AddServices()
@@ -45,10 +54,35 @@ namespace RrepTest.Controllers
         }
 
         // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("expresion1")]
+        public IActionResult GetExp()
         {
-            return "value";
+            int[] num = new[] {2, 5, 3, 6, 8, 7657, 34, 2, 65, 34};
+
+            var n = num.Where(x => x < 5 && x > 2);
+            var uredjaji = _context.Uredjaji;
+            var uredjajiQuery =
+                uredjaji.Select(x => x);
+            //x => x < 5 && x > 2
+            Expression<Func<int, bool>> test = x => (x < 5 && x > 2);
+            ParameterExpression numPar = Expression.Parameter(typeof(int), "x");
+            return Ok(test.Body);
+
+            //var randy = new Random();
+            //Func<bool> randomBool = () => randy.Next() % 2 == 0;
+
+            //if (randomBool())
+            //{
+            //    uredjaji = uredjaji.Where(y => y.Id > 2);
+            //}
+
+            //if (randomBool())
+            //{
+            //    uredjaji = uredjaji.Where(x => x.Id > 5);
+            //}
+
+
+            //return Ok(uredjaji);
         }
 
         // POST api/<controller>
