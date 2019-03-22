@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Expressions;
 using RrepTest.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,7 +13,7 @@ using RrepTest.Models;
 namespace RrepTest.Controllers
 {
     [Route("api/[controller]")]
-    public class ExpressionController : Controller
+    public class ExpressionController : QueryInfo
     {
         private readonly DataContext _context;
 
@@ -20,50 +22,16 @@ namespace RrepTest.Controllers
             _context = context;
         }
 
-        /*
-         *_context.DeviceUsage.Where(x => x.PersonId == 1)
-         * .OrderByDescending(x => x.DataFrom)
-         * .ThenBy(x => x.Device.Name)
-         * .Skip(0).Take(10)
-        // */
-        [HttpGet]
-        public IActionResult GetDeviceUsage()
+        [HttpPost]
+        public IQueryable Aloha([FromBody]QueryInfo input)
         {
-            return Ok();
+            var korUredjaja = _context.KorisceniUredjaji;
+            var expression = GetWhereExpression<KoriscenjeUredjaja>();
+            var order = OrderThings<KoriscenjeUredjaja>();
+            var result = korUredjaja.AsQueryable().Where(expression).OrderBy(order);
+            
+            return result;
         }
-        //var expression = GetWhereExpression<Entitet>(op, propName, stringValue);
-        //var result = lista.AsQueryable().Where(expression);
-
-        [HttpGet("proba")]
-        public Expression<Func<KoriscenjeUredjaja, bool>> GetWhereExpression(string propName, int value)
-        {
-
-            // ---------- Where --------------
-            ParameterExpression paramExp1 = Expression.Parameter(typeof(KoriscenjeUredjaja), "x");
-            ConstantExpression constExp1 = Expression.Constant(value, typeof(int));
-            var propExp1 = Expression.Property(paramExp1, propName);
-            BinaryExpression equal = Expression.Equal(propExp1, constExp1);
-            Expression<Func<KoriscenjeUredjaja, bool>> finalWhereExpresion = Expression.Lambda<Func<KoriscenjeUredjaja, bool>>(equal, paramExp1);
-            // -------------
-            _context.KorisceniUredjaji.Where(finalWhereExpresion);
-            return finalWhereExpresion;
-        }
-        [HttpGet("proba2")]
-        public Expression getOrderExpression(string paramName)
-        {
-            ParameterExpression paramExp1 = Expression.Parameter(typeof(KoriscenjeUredjaja), "x");
-            var propExp2 = Expression.Property(paramExp1, paramName);
-            var objExp = Expression.Convert(propExp2, typeof(object));
-            Expression<Func<KoriscenjeUredjaja, object>> finalOrderExp =
-                Expression.Lambda<Func<KoriscenjeUredjaja, object>>(objExp, paramExp1);
-
-            return finalOrderExp;
-        }
-
-        
-
-
-
-
+ 
     }
 }

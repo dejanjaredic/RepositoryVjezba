@@ -4,6 +4,6 @@
     {
         public string Property { get; set; }
         public string Operator { get; set; }
-        public int Value { get; set; }
+        public string Value { get; set; }
     }
 }
