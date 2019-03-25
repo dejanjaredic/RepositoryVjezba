@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,6 +65,11 @@ namespace RrepTest.Controllers
             return Ok("Osoba: "+name+" "+ surname + " je zaduzila: "+device);
         }
 
-
+        [HttpPost("expressiontest")]
+        public IQueryable Testing([FromBody] QueryInfo input)
+        {
+            var expressionThree = _repository.Aloha(input);
+            return expressionThree;
+        }
     }
 }

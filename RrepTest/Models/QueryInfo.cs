@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -7,45 +8,58 @@ using System.Security.AccessControl;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace RrepTest.Models
 {
-    public class QueryInfo : Controller 
+    public class QueryInfo 
     {
         public int Skip { get; set; }
         public int Take { get; set; }
         public List<SortInfo> Sorters { get; set; } = new List<SortInfo>();
         public FilterInfo Filter { get; set; }
 
-        public static Expression<Func<TEntity, bool>> GetWhereExpression<TEntity>(string op, string propertyName,
-           string value)
+        public BinaryExpression GetWhereExp<TEntity>(ParameterExpression par, string op, string propName, string value)
         {
-            ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "x");
+            Expression findPropExp = par;
+            Expression curePropExp = par;
 
-            var propExpression = Expression.Property(parameter, propertyName);
-            var type = propExpression.Type;
-            var convertedValue = Convert.ChangeType(value, type);
-            var constant = Expression.Constant(convertedValue);
+            string[] propNamesExp = propName.Split(".");
+            foreach (var propNameExp in propNamesExp)
+            {
+                
+                curePropExp = Expression.Property(curePropExp, propNameExp);
+
+                findPropExp = Expression.Property(findPropExp, propNameExp);
+            }
+
+            var type = curePropExp.Type;
+            var convertValue = Convert.ChangeType(value, type);
+            var constant = Expression.Constant(convertValue);
 
             BinaryExpression binary;
-            switch (convertedValue)
+            switch (convertValue)
             {
                 case string _:
-                    binary = GetBinaryExpressionForString(op, propExpression, constant);
+                    binary = GetBinaryExpressionForString(op, findPropExp, constant);
                     break;
                 case int _:
-                    binary = GetBinaryExpressdionForInt(op, propExpression, constant);
+                    binary = GetBinaryExpressdionForInt(op, findPropExp, constant);
                     break;
                 default:
                     throw new ArgumentException($"Neocekivani tip vrijednosti '{type.Name}'");
             }
 
-            return Expression.Lambda<Func<TEntity, bool>>(binary, parameter);
+            return binary;
         }
 
+        public Expression<Func<TEntity, bool>> GetWhereLambda<TEntity>(Expression binaryExp, ParameterExpression parameter)
+        {
+            var lambdaExp = Expression.Lambda<Func<TEntity, bool>>(binaryExp, parameter);
+            return lambdaExp;
+        }
 
-
-        public static BinaryExpression GetBinaryExpressdionForInt(string op, MemberExpression propExpression, ConstantExpression constant)
+        public BinaryExpression GetBinaryExpressdionForInt(string op, Expression propExpression, ConstantExpression constant)
         {
             switch (op)
             {
@@ -65,7 +79,7 @@ namespace RrepTest.Models
             }
         }
 
-        public static BinaryExpression GetBinaryExpressionForString(string op, MemberExpression propExpression, ConstantExpression constant)
+        public  BinaryExpression GetBinaryExpressionForString(string op, Expression propExpression, ConstantExpression constant)
         {
 
             var trueExpression = Expression.Constant(true, typeof(bool));
@@ -87,7 +101,7 @@ namespace RrepTest.Models
             return bin;
         }
 
-        public static Expression<Func<TEntity, object>> OrderThings<TEntity>(string propName)
+        public Expression<Func<TEntity, object>> OrderThings<TEntity>(string propName, string direction)
         {
             var type = typeof(TEntity);
             var prop = type.GetProperty(propName);
@@ -97,6 +111,8 @@ namespace RrepTest.Models
             var finalExp = Expression.Lambda<Func<TEntity, object>>(convert, param);
             return finalExp;
         }
+
+      
         /*
          *_context.DeviceUsage.Where(x => x.PersonId == 1)
          * .OrderByDescending(x => x.DataFrom)
@@ -122,6 +138,11 @@ namespace RrepTest.Models
         //        ;
 
         //    return query.Provider.CreateQuery<TEntity>(resultExpression);
+        //}
+        //public static IQueryable<TEntity> OrderByQuery<TEntity>(IQueryable<TEntity> data, string propName, bool isAsc)
+        //{
+        //    string sort = isAsc ? "ascending" : "descendin";
+        //    return data.OrderBy();
         //}
 
     }
